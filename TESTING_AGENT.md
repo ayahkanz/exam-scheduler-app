@@ -384,4 +384,15 @@ npm run test:mobile
 4. **Monitor Continuous Testing**
    ```bash
    npm run test:monitor
+   ```
+
+5. **Run React Native App**
+   ```bash
+   npx react-native init examSchedulerStudent
+   cd examSchedulerStudent
+   ```
+
+6. **Run React Native App**
+   ```bash
+   npx react-native run-android
    ``` 
