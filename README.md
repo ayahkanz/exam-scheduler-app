@@ -420,6 +420,54 @@ Jika Anda mengalami masalah atau memiliki pertanyaan:
 - [ ] Email notifications
 - [ ] Mobile responsive design
 
+## 📱 Setup Environment React Native (Aplikasi Mahasiswa)
+
+Berikut langkah-langkah untuk menyiapkan environment React Native di Mac (Android):
+
+1. **Install Prasyarat**
+   - Node.js & Watchman:
+     ```sh
+     brew install node
+     brew install watchman
+     ```
+   - Android Studio: [Download](https://developer.android.com/studio), install SDK & emulator.
+   - JDK:
+     ```sh
+     brew install openjdk@17
+     ```
+
+2. **Install React Native CLI**
+   ```sh
+   npm install -g react-native-cli
+   ```
+
+3. **Inisialisasi Project**
+   ```sh
+   npx react-native init examSchedulerStudent
+   cd examSchedulerStudent
+   ```
+
+4. **Jalankan di Emulator/Device**
+   - Buka Android Studio → Device Manager → Buat & jalankan emulator.
+   - Jalankan app:
+     ```sh
+     npx react-native run-android
+     ```
+
+5. **Troubleshooting**
+   - Jika error SDK, tambahkan ke ~/.zshrc:
+     ```sh
+     export ANDROID_HOME=$HOME/Library/Android/sdk
+     export PATH=$PATH:$ANDROID_HOME/emulator
+     export PATH=$PATH:$ANDROID_HOME/tools
+     export PATH=$PATH:$ANDROID_HOME/tools/bin
+     export PATH=$PATH:$ANDROID_HOME/platform-tools
+     ```
+
+6. **Siap untuk koding fitur mobile!**
+
+> Lihat README ini untuk update selanjutnya terkait pengembangan aplikasi mobile mahasiswa berbasis React Native.
+
 ---
 
 **dibuat oleh 4h3 untuk memudahkan pengelolaan ujian mahasiswa** 
