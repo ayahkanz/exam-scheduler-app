@@ -468,6 +468,48 @@ Berikut langkah-langkah untuk menyiapkan environment React Native di Mac (Androi
 
 > Lihat README ini untuk update selanjutnya terkait pengembangan aplikasi mobile mahasiswa berbasis React Native.
 
+## 🔔 Notifikasi WhatsApp ke Mahasiswa
+
+Aplikasi ini dapat diintegrasikan dengan WhatsApp untuk mengirim notifikasi otomatis ke mahasiswa (misal: jadwal ujian, reminder, perubahan jadwal, dsb).
+
+### Opsi Integrasi WhatsApp
+1. **WhatsApp Business Cloud API (Resmi dari Meta)**
+   - Cocok untuk skala besar, legal, perlu verifikasi bisnis dan ada biaya per pesan.
+2. **Gateway Pihak Ketiga**
+   - Contoh: Wablas, Twilio, Qontak, Zenziva, dll.
+   - Mudah setup, cocok untuk kebutuhan kampus/skala menengah.
+3. **WhatsApp Web Automation**
+   - Contoh: whatsapp-web.js (Node.js). Tidak direkomendasikan untuk production.
+
+### Contoh Implementasi Sederhana (Wablas)
+Tambahkan fungsi di backend (Node.js):
+
+```js
+const axios = require('axios');
+
+async function sendWhatsAppMessage(phone, message) {
+  await axios.post('https://console.wablas.com/api/send-message', {
+    phone, // nomor HP mahasiswa, format 628xxxx
+    message,
+  }, {
+    headers: {
+      'Authorization': 'API_KEY_WABLAS_KAMU',
+      'Content-Type': 'application/json'
+    }
+  });
+}
+```
+
+Panggil fungsi ini di backend saat perlu notifikasi ke mahasiswa.
+
+### Langkah Integrasi di Project
+1. Pilih provider WhatsApp API (resmi/gateway).
+2. Daftarkan nomor bisnis dan dapatkan API key.
+3. Tambahkan fungsi di backend untuk kirim pesan.
+4. Trigger fungsi ini saat event penting (jadwal, reminder, dsb).
+
+> Pastikan mahasiswa sudah mendaftarkan nomor WhatsApp mereka di sistem.
+
 ---
 
 **dibuat oleh 4h3 untuk memudahkan pengelolaan ujian mahasiswa** 
