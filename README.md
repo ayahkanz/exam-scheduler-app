@@ -1,36 +1,425 @@
-# Exam Scheduler App
+# Aplikasi Nomor Ujian Mahasiswa
 
-Aplikasi web untuk mengatur nomor ujian mahasiswa dengan sistem alokasi ruang otomatis.
+Aplikasi web untuk mengatur nomor ujian mahasiswa dengan sistem alokasi ruang yang otomatis dan optimal.
 
-## Features
+## 🚀 Fitur Utama
 
-- ✅ Alokasi ruang ujian otomatis
-- ✅ Optimasi penggunaan ruang
-- ✅ Prioritas ruang berdekatan
-- ✅ Export ke PDF dan Excel
-- ✅ Import data dari CSV
-- ✅ Dashboard management
+### 1. Manajemen Ruang Ujian
+- **Kelas Besar**: Kapasitas 55 orang
+- **Kelas Sedang**: Kapasitas 30 orang  
+- **Kelas Kecil**: Kapasitas 25 orang
+- CRUD operasi untuk ruang ujian
+- Statistik penggunaan ruang
 
-## Tech Stack
+### 2. Manajemen Matakuliah
+- Input data matakuliah dan jumlah peserta
+- Import data dari CSV/Excel
+- Tracking status matakuliah
 
-- **Frontend:** React + TypeScript + Tailwind CSS
-- **Backend:** Node.js + Express
-- **Database:** PostgreSQL/MongoDB
-- **Tools:** Cursor AI, GitHub Actions
+### 3. Algoritma Alokasi Ruang
+- Auto-assign ruang berdasarkan jumlah peserta
+- Prioritas ruang berdekatan untuk satu matakuliah
+- Optimasi penggunaan ruang untuk meminimalkan waste space
+- Conflict detection untuk jadwal yang bentrok
 
-## Installation
+### 4. Output & Laporan
+- Generate nomor ujian untuk setiap mahasiswa
+- Laporan alokasi ruang per matakuliah
+- Denah tempat duduk per ruang
+- Export ke PDF dan Excel
 
+## 🛠️ Tech Stack
+
+### Backend
+- **Runtime**: Node.js dengan TypeScript
+- **Framework**: Express.js
+- **Database**: PostgreSQL
+- **ORM**: Native PostgreSQL driver (pg)
+- **Validation**: Joi
+- **Security**: Helmet, CORS, Rate Limiting
+
+### Frontend
+- **Framework**: React.js dengan TypeScript
+- **Styling**: Tailwind CSS
+- **State Management**: React Query
+- **Routing**: React Router DOM
+- **HTTP Client**: Axios
+- **UI Components**: Headless UI, Heroicons
+- **Export**: jsPDF untuk PDF generation
+- **Charts**: Recharts untuk visualisasi data
+
+## 📋 Prerequisites
+
+Sebelum menjalankan aplikasi, pastikan sistem Anda memiliki:
+
+1. **Node.js** (versi 16 atau lebih baru)
+2. **PostgreSQL** (versi 12 atau lebih baru)
+3. **npm** atau **yarn** package manager
+
+## 🚀 Installation & Setup
+
+### 1. Clone Repository
 ```bash
-# Clone repository
-git clone https://github.com/yourusername/exam-scheduler-app.git
-cd exam-scheduler-app
+git clone <repository-url>
+cd myproject
+```
 
-# Install dependencies
+### 2. Install Dependencies
+```bash
+# Install backend dependencies
+cd backend
 npm install
 
-# Setup environment
-cp .env.example .env
-# Edit .env dengan database credentials
+# Install frontend dependencies
+cd ../frontend
+npm install
+```
 
-# Run development
+### 3. Database Setup
+
+#### a. Buat Database PostgreSQL
+```sql
+CREATE DATABASE ujian_mahasiswa;
+CREATE USER ujian_user WITH PASSWORD 'your_password';
+GRANT ALL PRIVILEGES ON DATABASE ujian_mahasiswa TO ujian_user;
+```
+
+#### b. Konfigurasi Environment Variables
+Copy file `env.example` ke `.env` dan sesuaikan konfigurasi:
+
+```bash
+cd backend
+cp env.example .env
+```
+
+Edit file `.env`:
+```env
+# Database Configuration
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=ujian_mahasiswa
+DB_USER=ujian_user
+DB_PASSWORD=your_password
+
+# Server Configuration
+PORT=3001
+NODE_ENV=development
+
+# JWT Configuration
+JWT_SECRET=your_jwt_secret_key_here
+JWT_EXPIRES_IN=24h
+
+# CORS Configuration
+CORS_ORIGIN=http://localhost:3000
+
+# Rate Limiting
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX_REQUESTS=100
+```
+
+### 4. Run Database Migrations
+```bash
+cd backend
+npm run migrate
+```
+
+### 5. Seed Sample Data (Optional)
+```bash
+npm run seed
+```
+
+### 6. Start Development Server
+```bash
+# Start backend server
 npm run dev
+
+# Start frontend server
+cd ../frontend
+npm run dev
+```
+
+## 📚 API Documentation
+
+### Base URL
+```
+http://localhost:3001/api
+```
+
+### Authentication
+Saat ini API tidak memerlukan authentication. Untuk production, implementasi JWT authentication akan ditambahkan.
+
+### Endpoints
+
+#### Ruang (Rooms)
+
+##### GET /api/ruang
+Mendapatkan semua data ruang
+```bash
+curl http://localhost:3001/api/ruang
+```
+
+##### GET /api/ruang/:id
+Mendapatkan data ruang berdasarkan ID
+```bash
+curl http://localhost:3001/api/ruang/1
+```
+
+##### POST /api/ruang
+Membuat ruang baru
+```bash
+curl -X POST http://localhost:3001/api/ruang \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nama_ruang": "A101",
+    "kapasitas": 55,
+    "lokasi": "Gedung A",
+    "lantai": 1,
+    "gedung": "Gedung A",
+    "status": "aktif"
+  }'
+```
+
+##### PUT /api/ruang/:id
+Update data ruang
+```bash
+curl -X PUT http://localhost:3001/api/ruang/1 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "kapasitas": 60
+  }'
+```
+
+##### DELETE /api/ruang/:id
+Hapus ruang
+```bash
+curl -X DELETE http://localhost:3001/api/ruang/1
+```
+
+##### GET /api/ruang/statistics
+Mendapatkan statistik ruang
+```bash
+curl http://localhost:3001/api/ruang/statistics
+```
+
+##### GET /api/ruang/with-allocation
+Mendapatkan ruang dengan informasi alokasi untuk waktu tertentu
+```bash
+curl "http://localhost:3001/api/ruang/with-allocation?tanggal=2024-01-15&waktu_mulai=08:00&waktu_selesai=10:00"
+```
+
+#### Alokasi (Allocation)
+
+##### POST /api/allocation/auto
+Auto alokasi ruang untuk matakuliah
+```bash
+curl -X POST http://localhost:3001/api/allocation/auto \
+  -H "Content-Type: application/json" \
+  -d '{
+    "tanggal": "2024-01-15",
+    "waktu_mulai": "08:00",
+    "waktu_selesai": "10:00",
+    "matakuliah_ids": [1, 2, 3]
+  }'
+```
+
+##### GET /api/allocation/summary
+Mendapatkan ringkasan alokasi untuk waktu tertentu
+```bash
+curl "http://localhost:3001/api/allocation/summary?tanggal=2024-01-15&waktu_mulai=08:00&waktu_selesai=10:00"
+```
+
+##### POST /api/allocation/check-conflicts
+Cek konflik alokasi
+```bash
+curl -X POST http://localhost:3001/api/allocation/check-conflicts \
+  -H "Content-Type: application/json" \
+  -d '{
+    "tanggal": "2024-01-15",
+    "waktu_mulai": "08:00",
+    "waktu_selesai": "10:00"
+  }'
+```
+
+##### POST /api/allocation/preview
+Preview alokasi tanpa menyimpan ke database
+```bash
+curl -X POST http://localhost:3001/api/allocation/preview \
+  -H "Content-Type: application/json" \
+  -d '{
+    "tanggal": "2024-01-15",
+    "waktu_mulai": "08:00",
+    "waktu_selesai": "10:00"
+  }'
+```
+
+## 🧪 Testing
+
+### Run Tests
+```bash
+cd backend
+npm test
+```
+
+### Run Tests in Watch Mode
+```bash
+npm run test:watch
+```
+
+## 📊 Database Schema
+
+### Tabel Ruang
+```sql
+CREATE TABLE ruang (
+    id SERIAL PRIMARY KEY,
+    nama_ruang VARCHAR(50) NOT NULL UNIQUE,
+    kapasitas INTEGER NOT NULL CHECK (kapasitas > 0),
+    lokasi VARCHAR(100),
+    lantai INTEGER,
+    gedung VARCHAR(50),
+    status VARCHAR(20) DEFAULT 'aktif',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### Tabel Matakuliah
+```sql
+CREATE TABLE matakuliah (
+    id SERIAL PRIMARY KEY,
+    kode_mk VARCHAR(20) NOT NULL UNIQUE,
+    nama_mk VARCHAR(100) NOT NULL,
+    jumlah_peserta INTEGER NOT NULL CHECK (jumlah_peserta > 0),
+    dosen VARCHAR(100),
+    semester VARCHAR(10),
+    tahun_ajaran VARCHAR(10),
+    status VARCHAR(20) DEFAULT 'aktif',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### Tabel Alokasi
+```sql
+CREATE TABLE alokasi (
+    id SERIAL PRIMARY KEY,
+    matakuliah_id INTEGER NOT NULL REFERENCES matakuliah(id),
+    ruang_id INTEGER NOT NULL REFERENCES ruang(id),
+    tanggal DATE NOT NULL,
+    waktu_mulai TIME NOT NULL,
+    waktu_selesai TIME NOT NULL,
+    nomor_urut INTEGER DEFAULT 1,
+    jumlah_peserta_dialokasikan INTEGER NOT NULL,
+    status VARCHAR(20) DEFAULT 'direncanakan',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+## 🔧 Development
+
+### Project Structure
+```
+myproject/
+├── backend/
+│   ├── src/
+│   │   ├── config/          # Database & app configuration
+│   │   ├── controllers/     # Request handlers
+│   │   ├── models/          # Database models
+│   │   ├── routes/          # API routes
+│   │   ├── services/        # Business logic
+│   │   └── utils/           # Utility functions
+│   ├── migrations/          # Database migrations
+│   ├── tests/               # Test files
+│   └── package.json
+├── frontend/                # React frontend
+│   ├── src/
+│   │   ├── components/      # Reusable components
+│   │   ├── pages/           # Page components
+│   │   ├── services/        # API services
+│   │   ├── types/           # TypeScript types
+│   │   └── utils/           # Utility functions
+│   └── package.json
+└── README.md
+```
+
+### Available Scripts
+
+#### Backend
+- `npm run dev` - Start development server with hot reload
+- `npm run build` - Build TypeScript to JavaScript
+- `npm start` - Start production server
+- `npm test` - Run tests
+- `npm run test:watch` - Run tests in watch mode
+- `npm run migrate` - Run database migrations
+- `npm run seed` - Seed sample data
+
+## 🚀 Deployment
+
+### Production Build
+```bash
+cd backend
+npm run build
+npm start
+```
+
+### Environment Variables for Production
+```env
+NODE_ENV=production
+DB_HOST=your_production_db_host
+DB_PORT=5432
+DB_NAME=ujian_mahasiswa
+DB_USER=your_db_user
+DB_PASSWORD=your_secure_password
+JWT_SECRET=your_very_secure_jwt_secret
+CORS_ORIGIN=https://yourdomain.com
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🆘 Support
+
+Jika Anda mengalami masalah atau memiliki pertanyaan:
+
+1. Periksa [Issues](../../issues) untuk solusi yang sudah ada
+2. Buat [Issue](../../issues/new) baru dengan detail masalah Anda
+3. Hubungi tim development
+
+## 🔄 Roadmap
+
+### Phase 1: Backend Core ✅
+- [x] Database schema design
+- [x] API endpoints for CRUD operations
+- [x] Room allocation algorithm
+- [x] Basic validation and error handling
+
+### Phase 2: Frontend Interface ✅
+- [x] Dashboard dan navigation
+- [x] Layout responsif dengan sidebar
+- [x] API service layer
+- [x] TypeScript types dan components
+- [ ] Form input matakuliah dan ruang
+- [ ] Real-time allocation preview
+- [ ] Manual adjustment interface
+
+### Phase 3: Advanced Features 📋
+- [ ] PDF export functionality
+- [ ] Drag & drop manual override
+- [ ] Conflict resolution system
+- [ ] Analytics dan reporting
+- [ ] User authentication & authorization
+- [ ] Email notifications
+- [ ] Mobile responsive design
+
+---
+
+**dibuat oleh 4h3 untuk memudahkan pengelolaan ujian mahasiswa** 
