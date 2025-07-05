@@ -1,0 +1,274 @@
+# Setup Repository GitHub - Aplikasi Nomor Ujian Mahasiswa
+
+## 1. Informasi Repository
+
+**Repository Name:** `exam-scheduler-app`  
+**Description:** Aplikasi web untuk mengatur nomor ujian mahasiswa dengan sistem alokasi ruang otomatis
+
+**Visibility:** 
+- ✅ **Public** (Recommended untuk portfolio)
+- ⭕ Private (Jika ada data sensitif)
+
+---
+
+## 2. Pilihan Lisensi
+
+### MIT License ✅ **RECOMMENDED**
+**Cocok untuk:**
+- Proyek open source
+- Penggunaan komersial diperbolehkan
+- Mudah dipahami dan fleksibel
+
+**Artinya:**
+- Orang lain boleh menggunakan, modify, dan distribute
+- Wajib menyertakan copyright notice
+- Tidak ada warranty/jaminan
+
+### Apache License 2.0
+**Cocok untuk:**
+- Proyek enterprise
+- Perlindungan patent yang lebih kuat
+- Dokumentasi yang lebih detail
+
+### GNU GPL v3
+**Cocok untuk:**
+- Proyek yang ingin tetap open source
+- Mencegah proprietary derivatives
+- Copyleft license
+
+### No License
+**Artinya:**
+- Hanya Anda yang punya hak
+- Orang lain tidak boleh menggunakan
+- Tidak recommended untuk portfolio
+
+**Rekomendasi:** Gunakan **MIT License** karena simpel dan friendly untuk portfolio.
+
+---
+
+## 3. .gitignore File
+
+```gitignore
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Build outputs
+build/
+dist/
+*.tsbuildinfo
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# Temporary folders
+tmp/
+temp/
+
+# API keys dan config sensitif
+config/database.js
+config/secrets.js
+
+# Upload folders
+uploads/
+static/uploads/
+
+# Backup files
+*.backup
+*.bak
+*.tmp
+```
+
+---
+
+## 4. README.md Template
+
+```markdown
+# Exam Scheduler App
+
+Aplikasi web untuk mengatur nomor ujian mahasiswa dengan sistem alokasi ruang otomatis.
+
+## Features
+
+- ✅ Alokasi ruang ujian otomatis
+- ✅ Optimasi penggunaan ruang
+- ✅ Prioritas ruang berdekatan
+- ✅ Export ke PDF dan Excel
+- ✅ Import data dari CSV
+- ✅ Dashboard management
+
+## Tech Stack
+
+- **Frontend:** React + TypeScript + Tailwind CSS
+- **Backend:** Node.js + Express
+- **Database:** PostgreSQL/MongoDB
+- **Tools:** Cursor AI, GitHub Actions
+
+## Installation
+
+```bash
+# Clone repository
+git clone https://github.com/yourusername/exam-scheduler-app.git
+cd exam-scheduler-app
+
+# Install dependencies
+npm install
+
+# Setup environment
+cp .env.example .env
+# Edit .env dengan database credentials
+
+# Run development
+npm run dev
+```
+
+## Usage
+
+1. Input data matakuliah dan jumlah peserta
+2. Sistem akan otomatis mengalokasikan ruang
+3. Review dan adjust alokasi jika diperlukan
+4. Generate nomor ujian dan export
+
+## Contributing
+
+1. Fork repository
+2. Create feature branch
+3. Commit changes
+4. Push to branch
+5. Create Pull Request
+
+## License
+
+MIT License - see LICENSE file for details
+```
+
+---
+
+## 5. Folder Structure Initial
+
+```
+exam-scheduler-app/
+├── frontend/
+│   ├── src/
+│   ├── public/
+│   └── package.json
+├── backend/
+│   ├── src/
+│   ├── config/
+│   └── package.json
+├── database/
+│   ├── migrations/
+│   └── seeds/
+├── docs/
+├── .github/
+│   └── workflows/
+├── .gitignore
+├── README.md
+├── LICENSE
+└── docker-compose.yml
+```
+
+---
+
+## 6. Langkah-langkah Setup
+
+### Di GitHub Web:
+1. Go to github.com → New Repository
+2. Repository name: `exam-scheduler-app`
+3. Description: Copy dari atas
+4. ✅ Public
+5. ✅ Add README file
+6. ✅ Add .gitignore → Node
+7. ✅ Choose license → MIT
+8. Click "Create repository"
+
+### Di Cursor:
+1. Clone repository: `git clone [URL]`
+2. Open folder di Cursor
+3. Create initial folder structure
+4. Commit dan push changes
+
+---
+
+## 7. Environment Variables Template
+
+Buat file `.env.example`:
+
+```env
+# Database
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=exam_scheduler
+DB_USER=your_username
+DB_PASSWORD=your_password
+
+# Server
+PORT=3000
+NODE_ENV=development
+
+# JWT
+JWT_SECRET=your_jwt_secret_here
+
+# File Upload
+UPLOAD_DIR=uploads/
+MAX_FILE_SIZE=10MB
+
+# Email (optional)
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USER=your_email@gmail.com
+EMAIL_PASSWORD=your_app_password
+```
+
+---
+
+## 8. First Commit Strategy
+
+```bash
+# Setelah setup initial
+git add .
+git commit -m "Initial project setup with folder structure"
+git push origin main
+
+# Kemudian buat branch untuk development
+git checkout -b develop
+git push origin develop
+```
+
+Mau saya bantu setup langkah demi langkah? Atau ada yang ingin dimodifikasi dari template ini?
